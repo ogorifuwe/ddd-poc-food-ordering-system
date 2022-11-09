@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Order extends AggregateRoot<OrderId> {
   private final CustomerId customerId;
-  private final RestaurantId restaurantId;
+  private final RestaurantId restuarantId;
   private final StreetAddress deliveryAddress;
   private final Money price;
   private final List<OrderItem> items;
@@ -26,8 +26,9 @@ public class Order extends AggregateRoot<OrderId> {
     setId(new OrderId(UUID.randomUUID()));
     trackingId = new TrackingId(UUID.randomUUID());
     orderStatus = OrderStatus.PENDING;
-    intializeOrderItems();
+    initializeOrderItems();
   }
+  
   public void validateOrder() {
     validateInitialOrder();
     validateTotalPrice();
@@ -58,17 +59,16 @@ public class Order extends AggregateRoot<OrderId> {
 
   public void cancel(List<String> failureMessages) {
     if (!(orderStatus == OrderStatus.PENDING || orderStatus == OrderStatus.CANCELLING)) {
-      throw new OrderDomainException("Order is not in correct state for canceled operation!");
+      throw new OrderDomainException("Order is not in correct state for cancel operation!");
     }
     orderStatus = OrderStatus.CANCELLED;
     updateFailureMessages(failureMessages);
   }
 
-  private void intializeOrderItems() {
-    long itemId = 1;
-    for (OrderItem orderItem: items) {
-      orderItem.initializeOrderItem(super.getId(), new OrderItemId(itemId++));
-    }
+  private void updateFailureMessages(List<String> failureMessages) {
+     if (this.failureMessages != null && failureMessages != null) {
+       this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).collect(Collectors.toList()));
+     }
   }
 
   private void validateInitialOrder() {
@@ -84,41 +84,35 @@ public class Order extends AggregateRoot<OrderId> {
   }
 
   private void validateItemsPrice() {
-    Money orderItemsTotal = items.stream()
-            .map(orderItem -> {
-              validateItemPrice(orderItem);
-              return orderItem.getSubTotal();
-            }).reduce(Money.ZERO, Money::add);
-
+    Money orderItemsTotal = items.stream().map(orderItem -> {
+      validateItemPrice(orderItem);
+      return orderItem.getSubTotal();
+    }).reduce(Money.ZERO, Money::add);
+    
     if (!price.equals(orderItemsTotal)) {
-      throw new OrderDomainException("Total price: " + price.getAmount()
-       + " is not equal to order items total: " + orderItemsTotal + "!");
+      throw new OrderDomainException("Total price: " + price.getAmount() +
+              " is not equal to Order items total: " + orderItemsTotal.getAmount() + "!");
     }
   }
 
   private void validateItemPrice(OrderItem orderItem) {
-    if (!orderItem.isValidPrice()) {
-      throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount()
-              + "is not valid for product " + orderItem.getProduct().getId().getValue());
+    if (!orderItem.isPriceValid()) {
+      throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount() +
+              " is not valid for product " + orderItem.getProduct().getId().getValue());
     }
   }
 
-  private void updateFailureMessages(List<String> failureMessages) {
-    if (this.failureMessages != null && failureMessages != null) {
-      this.failureMessages.addAll(
-              failureMessages.stream()
-                      .filter(message -> !message.isEmpty())
-                      .collect(Collectors.toList()));
-    }
-    if (this.failureMessages == null) {
-      this.failureMessages = failureMessages;
+  private void initializeOrderItems() {
+    long itemId = 0;
+    for (OrderItem orderItem: items) {
+      orderItem.initializeOrderItem(super.getId(), new OrderItemId(++itemId));
     }
   }
 
   private Order(Builder builder) {
     super.setId(builder.orderId);
     customerId = builder.customerId;
-    restaurantId = builder.restaurantId;
+    restuarantId = builder.restuarantId;
     deliveryAddress = builder.deliveryAddress;
     price = builder.price;
     items = builder.items;
@@ -135,8 +129,8 @@ public class Order extends AggregateRoot<OrderId> {
     return customerId;
   }
 
-  public RestaurantId getRestaurantId() {
-    return restaurantId;
+  public RestaurantId getRestuarantId() {
+    return restuarantId;
   }
 
   public StreetAddress getDeliveryAddress() {
@@ -166,7 +160,7 @@ public class Order extends AggregateRoot<OrderId> {
   public static final class Builder {
     private OrderId orderId;
     private CustomerId customerId;
-    private RestaurantId restaurantId;
+    private RestaurantId restuarantId;
     private StreetAddress deliveryAddress;
     private Money price;
     private List<OrderItem> items;
@@ -187,8 +181,8 @@ public class Order extends AggregateRoot<OrderId> {
       return this;
     }
 
-    public Builder restaurantId(RestaurantId val) {
-      restaurantId = val;
+    public Builder restuarantId(RestaurantId val) {
+      restuarantId = val;
       return this;
     }
 

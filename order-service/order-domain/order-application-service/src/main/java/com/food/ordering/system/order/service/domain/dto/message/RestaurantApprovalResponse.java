@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.util.List;
 
-@Getter
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class RestaurantApprovalResponse {
   private String id;
   private String sagaId;
@@ -17,4 +18,5 @@ public class RestaurantApprovalResponse {
   private String restaurantId;
   private Instant createdAt;
   private OrderApprovalStatus orderApprovalStatus;
+  private List<String> failureMessages;
 }

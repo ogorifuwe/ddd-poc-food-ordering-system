@@ -5,6 +5,8 @@ import com.food.ordering.system.order.service.domain.dto.create.CreateOrderRespo
 import com.food.ordering.system.order.service.domain.dto.track.TrackOrderQuery;
 import com.food.ordering.system.order.service.domain.dto.track.TrackOrderResponse;
 import com.food.ordering.system.order.service.domain.ports.input.service.OrderApplicationService;
+import com.food.ordering.system.order.service.domain.utility.OrderCreateCommandHandler;
+import com.food.ordering.system.order.service.domain.utility.OrderTrackCommandHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -15,12 +17,11 @@ import org.springframework.validation.annotation.Validated;
 class OrderApplicationServiceImpl implements OrderApplicationService {
 
   private final OrderCreateCommandHandler orderCreateCommandHandler;
+  private final OrderTrackCommandHandler orderTrackCommandHandler;
 
-  private final TrackOrderCommandHandler trackOrderCommandHandler;
-
-  public OrderApplicationServiceImpl(OrderCreateCommandHandler orderCreateCommandHandler, TrackOrderCommandHandler trackOrderCommandHandler) {
+  public OrderApplicationServiceImpl(OrderCreateCommandHandler orderCreateCommandHandler, OrderTrackCommandHandler orderTrackCommandHandler) {
     this.orderCreateCommandHandler = orderCreateCommandHandler;
-    this.trackOrderCommandHandler = trackOrderCommandHandler;
+    this.orderTrackCommandHandler = orderTrackCommandHandler;
   }
 
   @Override
@@ -30,6 +31,6 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
 
   @Override
   public TrackOrderResponse trackOrder(TrackOrderQuery trackOrderQuery) {
-    return trackOrderCommandHandler.trackOrder(trackOrderQuery);
+    return orderTrackCommandHandler.trackOrder(trackOrderQuery);
   }
 }

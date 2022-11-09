@@ -37,7 +37,7 @@ public class StreetAddress {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     StreetAddress that = (StreetAddress) o;
-    return street.equals(that.street) && postalCode.equals(that.postalCode) && Objects.equals(city, that.city);
+    return street.equals(that.street) && postalCode.equals(that.postalCode) && city.equals(that.city);
   }
 
   @Override

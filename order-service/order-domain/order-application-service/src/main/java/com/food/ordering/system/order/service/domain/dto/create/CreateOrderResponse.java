@@ -4,18 +4,18 @@ import com.food.ordering.system.domain.valueobject.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-@Getter
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class CreateOrderResponse {
-  @NonNull
+  @NotNull
   private final UUID orderTrackingId;
-  @NonNull
+  @NotNull
   private final OrderStatus orderStatus;
-  @NonNull
+  @NotNull
   private final String message;
 }

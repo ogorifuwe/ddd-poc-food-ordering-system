@@ -7,9 +7,9 @@ import lombok.Getter;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class OrderAddress {
   @NotNull
   @Max(value = 50)

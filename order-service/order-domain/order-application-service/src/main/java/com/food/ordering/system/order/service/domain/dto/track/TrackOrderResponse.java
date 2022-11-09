@@ -9,9 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class TrackOrderResponse {
   @NotNull
   private final UUID orderTrackingId;

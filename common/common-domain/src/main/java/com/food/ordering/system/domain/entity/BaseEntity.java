@@ -3,14 +3,14 @@ package com.food.ordering.system.domain.entity;
 import java.util.Objects;
 
 public abstract class BaseEntity<ID> {
-  private ID orderId;
+  private ID id;
 
   public ID getId() {
-    return orderId;
+    return id;
   }
 
   public void setId(ID id) {
-    this.orderId = id;
+    this.id = id;
   }
 
   @Override
@@ -18,11 +18,11 @@ public abstract class BaseEntity<ID> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     BaseEntity<?> that = (BaseEntity<?>) o;
-    return orderId.equals(that.orderId);
+    return id.equals(that.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(orderId);
+    return Objects.hash(id);
   }
 }

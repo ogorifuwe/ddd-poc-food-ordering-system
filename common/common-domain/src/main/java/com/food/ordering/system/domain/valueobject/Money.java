@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Money {
-
   private final BigDecimal amount;
 
   public static final Money ZERO = new Money(BigDecimal.ZERO);
@@ -15,21 +14,19 @@ public class Money {
   }
 
   public boolean isGreaterThanZero() {
-    return this.amount != null
-            && this.amount.compareTo(BigDecimal.ZERO) > 0;
+    return this.amount != null && this.amount.compareTo(BigDecimal.ZERO) > 0;
   }
 
-  public boolean isGreaterThan(Money money) {
-    return this.amount != null
-            && this.amount.compareTo(money.getAmount()) > 0;
+  public boolean isGreaterThan(Money value) {
+    return this.amount != null && this.amount.compareTo(value.getAmount()) > 0;
   }
 
-  public Money add(Money money) {
-    return new Money(setScale(this.amount.add(money.getAmount())));
+  public Money add(Money value) {
+    return new Money(setScale(this.amount.add(value.getAmount())));
   }
 
-  public Money subtract(Money money) {
-    return new Money(setScale(this.amount.subtract(money.getAmount())));
+  public Money subtract(Money value) {
+    return new Money(setScale(this.amount.subtract(value.getAmount())));
   }
 
   public Money multiply(int multiplier) {

@@ -7,9 +7,9 @@ import lombok.Getter;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-@Getter
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class TrackOrderQuery {
   @NotNull
   private final UUID orderTrackingId;

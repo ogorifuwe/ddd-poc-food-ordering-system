@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
-@Getter
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class PaymentResponse {
   private String id;
   private String sagaId;
