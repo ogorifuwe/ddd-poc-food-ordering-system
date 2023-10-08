@@ -58,7 +58,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
 
   public static final class Builder {
     private OrderItemId orderItemId;
-    private OrderId orderId;
+//    private OrderId orderId;
     private Product product;
     private int quantity;
     private Money price;
@@ -72,8 +72,8 @@ public class OrderItem extends BaseEntity<OrderItemId> {
       return this;
     }
 
-    public Builder orderId(OrderId val) {
-      orderId = val;
+    public Builder orderItemId(OrderItemId val) {
+      orderItemId = val;
       return this;
     }
 
